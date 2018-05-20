@@ -2,7 +2,7 @@ package serafin.solene.classes;
 public class Ship {
 	private Coordinate[] coord;
 
-	// CONSTRUCTOR
+	//CONSTRUCTOR
 	public Ship(Coordinate startCoord, Coordinate endCoord) {
 		// Supposing that the entered coordinates are corrects
 		int length;
@@ -26,7 +26,7 @@ public class Ship {
 			    		 + Integer.toString(startCoord.getR() ));
 			}
 		}
-	} //END OF CONSTRUCTOR
+	} //END CONSTRUCTOR
 	
 	public int getLength() {
 		//return the length of the current ship 

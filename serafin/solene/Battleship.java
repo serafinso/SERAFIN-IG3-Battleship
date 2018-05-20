@@ -138,7 +138,6 @@ public class Battleship {
 				break;
 			}
 			
-			
 			if (tour%2 == time%2) { //print who begin
 				ia1.whoBegin();
 			}else {
@@ -169,7 +168,8 @@ public class Battleship {
 			}
 			
 			time +=1;
-			if (ia1.allShipDestroyed()) {//increase scores and print final game
+			//increase scores and print final game
+			if (ia1.allShipDestroyed()) {
 				ia2WinTimes += 1;
 			}
 			else {

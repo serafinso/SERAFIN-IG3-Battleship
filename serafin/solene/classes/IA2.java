@@ -2,13 +2,15 @@ package serafin.solene.classes;
 
 public class IA2 extends IA0{	
 	
-	public IA2(int num) {
+	public IA2(int num) {//CONSTRUCTOR
 		super(num);
 	}
 
-	//In this IA there is 2 modes : chasing and strive
-	//default mode = chasing 
-	//if there is a ship hit but not destroyed --> strive mode 
+	/*	In this IA there is 2 modes : chasing and strive
+	*	default mode = chasing 
+	*	if there is a ship hit but not destroyed --> strive mode
+	*/
+	
 	public String randomACEGI() {
 		//return a random String between A, C, E, G, I
 		String tab[]= {"A","C","E","G","I"};
@@ -102,7 +104,7 @@ public class IA2 extends IA0{
 					}
 				}
 			}			
-		}else {
+		}else {// strive mode
 			for (int j=0; j<5;j++) {
 				Ship s1 = o.getShiplist().get(j);
 				if (s1.wasHit()&&!s1.isDestroyed()) {

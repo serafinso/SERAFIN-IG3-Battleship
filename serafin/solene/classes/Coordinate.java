@@ -5,8 +5,7 @@ public class Coordinate {
 	private int r;
 	private boolean hit = false;
 	
-	//BUILDER
-	public Coordinate(String ca) {
+	public Coordinate(String ca) {//CONSTRUCTOR
 		String row ="";
 		int y=0;
 		this.c=Character.toString(ca.charAt(0));

@@ -3,7 +3,7 @@ package serafin.solene.classes;
 import java.util.Scanner;
 
 public class Human extends Player{
-	public Human(int num) {
+	public Human(int num) {//CONSTRUCTOR
 		super(num);
 	}
 
@@ -36,10 +36,11 @@ public class Human extends Player{
 		}
 	}
 	
-	public void printGamePlaceShip(){ 
+	public void printGamePlaceShip(){
+		//different from printGameCurentPlayer because this function doesn't need player opponent informations 
+		//and less control needed to print (less if) 
 		//print the game for the player when he put ship on the board game
-		//~ = no Ship
-		//S = Ship
+		//~ = no Ship //S = Ship 
 		System.out.println("\n1 = There is a Ship Here \n~ = Water \n");
 		System.out.println("      A   B   C   D   E   F   G   H   I   J  \n");
 		for(int r=1; r<=10;r++ ) {//for each row
@@ -54,6 +55,50 @@ public class Human extends Player{
 					System.out.print(" S  " );
 				} else {
 					System.out.print(" ~  " );
+				}
+			}
+			System.out.println();
+			System.out.println();
+		}
+	}
+	
+	
+	public void printGameCurrentPlayer(Player o){ 
+		//o = player opponent, pAttack = player who attack
+		//print the game for a player before and after pAttack attack (print where he already attack and boat he as hit)
+		//S = You have a Ship here //~ = nothing happen here//1 = ShipFind//-1 = ShipDestroyed//X missile in the water
+		System.out.println("\n 1 = Your Ship is Hit but it isn't destroyed \n-1 = Your Ship is destroyed \n ~ = Water "
+				+ "\n X = Opponent shot in the water \n S = You have a Ship not hit \n");
+		System.out.println("     A   B   C   D   E   F   G   H   I   J  \n");
+		for(int r=1; r<=10;r++ ) {//for each row
+			if (r==10) {// remove the offset of 10 which has two digits
+				System.out.print(" " + r +"  ");
+			} else {
+				System.out.print(" " + r +"   ");
+			}
+			for(char c='A'; c <= 'J'; c++) {//for each column
+				Coordinate c1 = new Coordinate (Character.toString(c) + Integer.toString(r));
+				if (shipAtThisCoordinate(c1) && !whichShipHere(c1).isHit(c1)) {
+					System.out.print("S   ");
+				}  else {
+					if (o.coordinateHitContains(c1)) {
+						System.out.print("X   ");
+					} else {
+						if (shipAtThisCoordinate(c1)) {
+							Ship s1 = whichShipHere(c1);
+							if (s1.isDestroyed()) {
+								System.out.print("-1  ");
+							} else {
+								if (s1.isHit(c1)) {
+									System.out.print("1   ");
+								} else {
+									System.out.print("~   ");
+								}
+							}
+						} else {
+							System.out.print("~   ");
+						}
+					}
 				}
 			}
 			System.out.println();
@@ -94,14 +139,13 @@ public class Human extends Player{
 		}
 		return c1;
 	}
+	
 	public Ship askShip() {
 		// ask 2 Coordinates at the user to define a ship and check if the Coordinates are corrects
 		Coordinate c1 = null;
 		Coordinate c2 = null;
 		Ship s1 = null;
-		boolean shipHere;
 		do {
-			shipHere = false;
 			System.out.println("Enter the first coordonate of the ship");
 			c1 = askCoordinate(new Player(0));
 			System.out.println("Enter the second coordonate of the ship ");
@@ -171,10 +215,12 @@ public class Human extends Player{
 		}
 	}
 	public void whoBegin() {
+		//Execute only if the current player begin
 		System.out.println("Player "+getNum()+" begin");
 	}
 	
 	public void printScores(int playerWinTimes, int nbTime) {
+		//print the scores of the current player
 		System.out.println("\nPlayer "+getNum()+" win "+playerWinTimes+ "/"+nbTime+ " times ");
 	}
 }

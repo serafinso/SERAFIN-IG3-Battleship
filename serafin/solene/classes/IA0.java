@@ -2,22 +2,25 @@ package serafin.solene.classes;
 
 public class IA0 extends Player {
 	
-	public IA0(int num) {
+	public IA0(int num) {//CONSTRUCTOR
 		super(num);
 	}
 	
-	public final Coordinate printShoot(Player o) {//final because it's the same for all the IA (must not be override in 
+	public final Coordinate printShoot(Player o) {//final because it's the same for all the IA (avoid override)
+		//Ask where to shoot and print where the IA shoot 
 		Coordinate c1 = null;
 		c1 = askCoordinate(o);
 		System.out.print("IA shoot in " +c1+" : ");
 		return c1;
 	}
 
-	public final void whoBegin() {
+	public final void whoBegin() { //final because it's the same for all the IA (avoid override)
+		//print scores of this IA
 		System.out.println("IA begin");
 	}
 	
-	public final void printScores(int playerWinTimes, int nbTime) {
+	public final void printScores(int playerWinTimes, int nbTime) { //final because it's the same for all the IA (avoid override)
+		//print scores of this IA
 		System.out.println("IA win "+playerWinTimes+ "/"+nbTime+ " times ");
 	}
 	

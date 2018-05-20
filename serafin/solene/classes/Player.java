@@ -7,13 +7,13 @@ public class Player implements PlayerMustDo {
 	private ArrayList<Ship> shiplist = new ArrayList<Ship>(); //List of ship of the current player
 	private int num;
 	
-	public Player(int num){
+	public Player(int num){//CONSTRUCTOR
 		this.num = num;
 	}
 
 	public boolean correctShip(Coordinate startCoord, Coordinate endCoord) {
 		//This function is in Player class because check if the player enter a correct Ship 
-		//return True if the coordinates are corrects for a Ship
+		//return true if the coordinates are corrects for a Ship
 		//Correct for a ship = (Good size) && (horizontal or vertical Ship) && (Not an another ship here)
 		//precondition : startCoord and endCoord are corrects Coordinates
 		
@@ -33,6 +33,7 @@ public class Player implements PlayerMustDo {
 		if (s1.getLength() >5 || s1.getLength()<2) {
 			return false;
 		}
+		//already ship here
 		if (alreadyShipHere(s1)) {
 			return false;
 		}
@@ -127,12 +128,9 @@ public class Player implements PlayerMustDo {
 	}
 	
 	public void printGame(Player o){
-		//o = player opponent, pAttack = player who attack
+		//o = player opponent
 		//print the game for a player before and after pAttack attack (print where he already attack and boat he as hit)
-		//~ = nothing happen here
-		//1 = ShipFind
-		//-1 = ShipDestroyed
-		//X missile in the water
+		//~ = nothing happen here //1 = ShipFind //-1 = ShipDestroyed //X missile in the water
 		System.out.println("\n1 = You Hit a Ship but it isn't destroyed\n-1 = You destroyed a Ship "
 				+ "\n~ = Water \nX = You shot in the water \n");
 		
@@ -168,101 +166,32 @@ public class Player implements PlayerMustDo {
 			System.out.println();
 		}
 	}
-	
-	public void printGameCurrentPlayer(Player o){ 
-		//o = player opponent, pAttack = player who attack
-		//print the game for a player before and after pAttack attack (print where he already attack and boat he as hit)
-		//S = You have a Ship here 
-		//~ = nothing happen here
-		//1 = ShipFind
-		//-1 = ShipDestroyed
-		//X missile in the water
-		System.out.println("\n 1 = Your Ship is Hit but it isn't destroyed \n-1 = Your Ship is destroyed \n ~ = Water "
-				+ "\n X = Opponent shot in the water \n S = You have a Ship not hit \n");
-		System.out.println("     A   B   C   D   E   F   G   H   I   J  \n");
-		for(int r=1; r<=10;r++ ) {//for each row
-			if (r==10) {// remove the offset of 10 which has two digits
-				System.out.print(" " + r +"  ");
-			} else {
-				System.out.print(" " + r +"   ");
-			}
-			for(char c='A'; c <= 'J'; c++) {//for each column
-				Coordinate c1 = new Coordinate (Character.toString(c) + Integer.toString(r));
-				if (shipAtThisCoordinate(c1) && !whichShipHere(c1).isHit(c1)) {
-					System.out.print("S   ");
-				}  else {
-					if (o.coordinateHitContains(c1)) {
-						System.out.print("X   ");
-					} else {
-						if (shipAtThisCoordinate(c1)) {
-							Ship s1 = whichShipHere(c1);
-							if (s1.isDestroyed()) {
-								System.out.print("-1  ");
-							} else {
-								if (s1.isHit(c1)) {
-									System.out.print("1   ");
-								} else {
-									System.out.print("~   ");
-								}
-							}
-						} else {
-							System.out.print("~   ");
-						}
-					}
-				}
-			}
-			System.out.println();
-			System.out.println();
-		}
-	}
-	
+
 	//GETTER AND SETTER :
 	
 	public ArrayList<Coordinate> getCoordinateHit() {
 		return coordinateHit;
 	}
-	
 	public ArrayList<Ship> getShiplist() {
 		return shiplist;
 	}
-	public void addShiplist(Ship s1) { //set shiplist but here we add a ship 
+	public void addShiplist(Ship s1) { //set shipList but here we add a ship 
 		shiplist.add(s1);
 	}
-	public void addCoordinateHit(Coordinate c1) { //set shiplist but here we add a ship 
+	public void addCoordinateHit(Coordinate c1) { //set coordinateHit but here we add a coordinates
 		coordinateHit.add(c1);
 	}
-
-	@Override
-	public Coordinate askCoordinate(Player p) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void enterAllShip() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public int getNum() {
 		return num;
 	}
-
 	public void setNum(int num) {
 		this.num = num;
 	}
 
-	public Coordinate printShoot(Player o) {
-		return null;
-	}
-
 	@Override
-	public void whoBegin() {
-		
-	}
-
-	@Override
-	public void printScores(int playerWinTimes, int nbTimes) {
-		
-	}
+	public Coordinate askCoordinate(Player p) {return null;	}
+	public void enterAllShip() {}
+	public void whoBegin() {}
+	public void printScores(int playerWinTimes, int nbTimes) {}
+	public Coordinate printShoot(Player o) {return null;}
 }	

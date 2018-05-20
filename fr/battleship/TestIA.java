@@ -7,18 +7,18 @@ import java.io.IOException;
 import serafin.solene.classes.*;
 public class TestIA {
 	
-	public static void shoot(Player pAttack, Player p, Coordinate c1) {
-		//pAttack = player who attack, p = player attacked
+	public static void shoot(Player p, Player o, Coordinate c1) {
+		//p = player who attack, o = opponent
 		//shoot at the Coordinate c1
 		//print if he Hit, Destroyed or in the water
-		if (p.shipAtThisCoordinate(c1)) {
-			Ship s1 = p.whichShipHere(c1);
+		if (o.shipAtThisCoordinate(c1)) {
+			Ship s1 = o.whichShipHere(c1);
 			if (s1.isHit(c1)) {
 			}else {
 				s1.hit(c1);
 			}
 		} else {
-			pAttack.addCoordinateHit(c1);
+			p.addCoordinateHit(c1);
 		}
 	}
 	
@@ -27,7 +27,7 @@ public class TestIA {
 		Player ia1;
 		Player ia2;
 		int versionIA1 = -1;
-		File f = new File("src/ai_proof.csv");
+		File f = new File("ai_proof.csv");
 		@SuppressWarnings("resource")
 		FileWriter writer = new FileWriter(f);
 		writer.append("AI Name; score; AI Name2; score2\n");
@@ -63,40 +63,33 @@ public class TestIA {
 				tour = 1;
 				switch (versionIA1) {
 				case 0:
-					ia1 = new IA0();
+					ia1 = new IA0(1);
 					break;
 				case 1:
-					ia1 = new IA1();
+					ia1 = new IA1(1);
 					break;
 				default:
-					ia1 = new IA2();
+					ia1 = new IA2(1);
 					break;
 				}
 				switch (versionIA2) {
 				case 0://IA0
-					ia2 = new IA0();
+					ia2 = new IA0(2);
 					break;
 				case 1://IA1
-					ia2 = new IA1();
+					ia2 = new IA1(2);
 					break;
 				default://IA2
-					ia2 = new IA2();
+					ia2 = new IA2(2);
 					break;
 				}
 				//Player 1 put 5 Ship and then Player 2 put 5 ship
 				if (time%2 ==1) {
-					//enterAllShipA(ia1);
-					//System.out.print 
 					ia1.enterAllShip();
-				
 					ia2.enterAllShip();
-					//enterAllShipA(ia2);
 					
 				}else {// Player 2 put 5 Ship and then Player 1 put 5 ship
 					ia2.enterAllShip();
-					//enterAllShipA(ia2);
-
-					//enterAllShipA(ia1);
 					ia1.enterAllShip();
 				}
 				
@@ -122,19 +115,15 @@ public class TestIA {
 				}
 			}
 			
-			
 			switch (typeOfIA) {
 			case 1:
 				writer.append("AI Level Beginner; "+ia1WinTimes+"; Level Medium; "+ia2WinTimes +"\n");
-				System.out.println("AI Level Beginner; "+ia1WinTimes+"; Level Medium; "+ia2WinTimes);
 				break;
 			case 2:
 				writer.append("AI Level Beginner; "+ia1WinTimes+"; Level Hard; "+ia2WinTimes+"\n");
-				System.out.println("AI Level Beginner; "+ia1WinTimes+"; Level Hard; "+ia2WinTimes);
 				break;
 			case 3:
 				writer.append("AI Level Medium; "+ia1WinTimes+"; Level Hard; "+ia2WinTimes+"\n");
-				System.out.println("AI Level Medium; "+ia1WinTimes+"; Level Hard; "+ia2WinTimes);
 				break;
 			}
 		}
