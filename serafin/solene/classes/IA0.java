@@ -1,7 +1,49 @@
 package serafin.solene.classes;
-import java.util.Random;
 
 public class IA0 extends Player {
+	
+	public IA0(int num) {
+		super(num);
+	}
+	
+	public final Coordinate printShoot(Player o) {//final because it's the same for all the IA (must not be override in 
+		Coordinate c1 = null;
+		c1 = askCoordinate(o);
+		System.out.print("IA shoot in " +c1+" : ");
+		return c1;
+	}
+
+	public final void whoBegin() {
+		System.out.println("IA begin");
+	}
+	
+	public final void printScores(int playerWinTimes, int nbTime) {
+		System.out.println("IA win "+playerWinTimes+ "/"+nbTime+ " times ");
+	}
+	
+	public Ship enterShipIA(int size) {
+		//enter a Ship in a random position for an IA player
+		Coordinate startCoord = null;
+		Coordinate endCoord = null;
+		do {
+			//random between HORIZONTAL and VERTICAL
+			if(random10()%2==0) {//HORIZONTAL
+				//the letter should be between 'A' and 'J' - size + 1
+				startCoord = new Coordinate(randomBetween('A',(char) ('J'- size+1)) + Integer.toString(random10()));
+				char c = startCoord.getC().charAt(0);
+				c = (char) (c + size - 1);
+				endCoord = new Coordinate (Character.toString(c)+ startCoord.getR());
+			} else {//VERTICAL
+				//the letter should be between 1 and 10- size + 1
+				int max; 
+				max = 10-size+1;
+				startCoord = new Coordinate( randomBetween('A','J') + randomBetween ('1',(char)(max+'0')) );
+				endCoord = new Coordinate( startCoord.getC() + Integer.toString(startCoord.getR()+size-1));
+			}
+			
+		} while(!correctShip(startCoord, endCoord));
+		return new Ship(startCoord, endCoord);
+	}
 	
 	public void enterAllShip(){
 		//Enter all the ship for an IA player 
@@ -15,17 +57,7 @@ public class IA0 extends Player {
 	}
 		
 	public Coordinate askCoordinate(Player p) {
+		//return a random Coordinate
 		return new Coordinate( randomBetween('A','J') + random10());	
-	}
-	
-	public int random10() {
-		Random rd = new Random();
-		return rd.nextInt(10) + 1;
-	}
-	
-	public String randomBetween(char min, char max) {
-		Random rd = new Random();
-		char c = (char)(rd.nextInt(max - min + 1) + min);
-		return Character.toString(c);
 	}
 }

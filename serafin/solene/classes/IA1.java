@@ -1,20 +1,12 @@
 package serafin.solene.classes;
-import java.util.Random;
 
-public class IA1 extends IA0{
-	
-	public int random10() {
-		Random rd = new Random();
-		return rd.nextInt(10) + 1;
+public class IA1 extends IA0{	
+	public IA1(int num) {
+		super(num);
 	}
-	
-	public String randomBetween(char min, char max) {
-		Random rd = new Random();
-		char c = (char)(rd.nextInt(max - min + 1) + min);
-		return Character.toString(c);
-	}
-		
+
 	public Coordinate askCoordinate(Player o) {
+		//return a random Coordinate not already hit 
 		boolean find = false;
 		Coordinate c1 =null;
 		while (!find) {

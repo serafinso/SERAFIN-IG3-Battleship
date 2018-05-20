@@ -5,103 +5,13 @@ import java.util.Scanner;
 
 public class Battleship {
 	
-	public static void printGame(Player p, Player o){
-		//o = player opponent, pAttack = player who attack
-		//print the game for a player before and after pAttack attack (print where he already attack and boat he as hit)
-		//~ = nothing happen here
-		//1 = ShipFind
-		//-1 = ShipDestroyed
-		//X missile in the water
-		System.out.println("\n1 = You Hit a Ship but it isn't destroyed\n-1 = You destroyed a Ship "
-				+ "\n~ = Water \nX = You shot in the water \n");
-		
-		System.out.println("     A   B   C   D   E   F   G   H   I   J  ");
-		for(int r=1; r<=10;r++ ) {//for each row
-			if (r==10) { //align lign 10
-				System.out.print(" " + r +"  ");
-			} else {
-				System.out.print(" " + r +"   ");
-			}
-			for(char c='A'; c<='J'; c++) {//for each colomn
-				Coordinate c1 = new Coordinate(c + Integer.toString(r));
-				if (p.coordinateHitContains(c1)) {
-					System.out.print("X   ");
-				} else {
-					if (o.shipAtThisCoordinate(c1)) {
-						Ship s1 = o.whichShipHere(c1);
-						if (s1.isDestroyed()) {
-							System.out.print("-1  ");
-						} else {
-							if (s1.isHit(c1)) {
-								System.out.print("1   ");
-							} else {
-								System.out.print("~   ");
-							}
-						}
-					} else {
-						System.out.print("~   ");
-					}
-				}				
-			}
-			System.out.println();
-			System.out.println();
-		}
-	}
-	
-	public static void printGameCurrentPlayer(Player p, Player o){ 
-		//o = player opponent, pAttack = player who attack
-		//print the game for a player before and after pAttack attack (print where he already attack and boat he as hit)
-		//S = You have a Ship here 
-		//~ = nothing happen here
-		//1 = ShipFind
-		//-1 = ShipDestroyed
-		//X missile in the water
-		System.out.println("\n 1 = Your Ship is Hit but it isn't destroyed \n-1 = Your Ship is destroyed \n ~ = Water "
-				+ "\n X = Opponent shot in the water \n S = You have a Ship not hit \n");
-		System.out.println("     A   B   C   D   E   F   G   H   I   J  \n");
-		for(int r=1; r<=10;r++ ) {//for each row
-			if (r==10) {// remove the offset of 10 which has two digits
-				System.out.print(" " + r +"  ");
-			} else {
-				System.out.print(" " + r +"   ");
-			}
-			for(char c='A'; c <= 'J'; c++) {//for each column
-				Coordinate c1 = new Coordinate (Character.toString(c) + Integer.toString(r));
-				if (p.shipAtThisCoordinate(c1) && !p.whichShipHere(c1).isHit(c1)) {
-					System.out.print("S   ");
-				}  else {
-					if (o.coordinateHitContains(c1)) {
-						System.out.print("X   ");
-					} else {
-						if (p.shipAtThisCoordinate(c1)) {
-							Ship s1 = p.whichShipHere(c1);
-							if (s1.isDestroyed()) {
-								System.out.print("-1  ");
-							} else {
-								if (s1.isHit(c1)) {
-									System.out.print("1   ");
-								} else {
-									System.out.print("~   ");
-								}
-							}
-						} else {
-							System.out.print("~   ");
-						}
-					}
-				}
-			}
-			System.out.println();
-			System.out.println();
-		}
-	}
-	
-	public static void shoot(Player pAttack, Player p, Coordinate c1) {
-		//pAttack = player who attack, p = player attacked
+	public static void shoot(Player p, Player o, Coordinate c1) {
+		//p = player who attack, p = opponent
 		//shoot at the Coordinate c1
 		//print if he Hit, Destroyed or in the water
 		
-		if (p.shipAtThisCoordinate(c1)) {
-			Ship s1 = p.whichShipHere(c1);
+		if (o.shipAtThisCoordinate(c1)) {
+			Ship s1 = o.whichShipHere(c1);
 			if (s1.isHit(c1)) {
 				System.out.println("Already Hit");
 			}else {
@@ -115,8 +25,12 @@ public class Battleship {
 				}	
 			}
 		} else {
-			pAttack.addCoordinateHit(c1);
-			System.out.println("In the water !!");
+			if (p.coordinateHitContains(c1)) {
+				System.out.println("You already shot here, and you missed");
+			}else {
+				p.addCoordinateHit(c1);
+				System.out.println("In the water !!");
+			}
 		}
 	}
 	
@@ -133,42 +47,23 @@ public class Battleship {
 		}}
 		return false;		
 	}
-
-	public static void enterAllShipA(Player p) {
-		Ship s1 = new Ship (new Coordinate ("A1"),new Coordinate("D1"));
-		p.addShiplist(s1);
-		/*s1 = new Ship (new Coordinate ("E4"),new Coordinate("E8"));
-		p.addShiplist(s1);
-		s1 = new Ship (new Coordinate ("B4"),new Coordinate("D4"));
-		p.addShiplist(s1);
-		s1 = new Ship (new Coordinate ("G6"),new Coordinate("I6"));
-		p.addShiplist(s1);
-		s1 = new Ship (new Coordinate ("G2"),new Coordinate("H2"));
-		p.addShiplist(s1);
-		p.printGamePlaceShip();*/
-	}
 	
 	public static void main(String[] args) {
 		//VARIABLE DECLARATION :
 		
 		int tour = 1;// which player play 
-		Player ia1 = new Player();
-		Player ia2 = new Player();
+		Player ia1 = new Player(1);
+		Player ia2 = new Player(2);
 		boolean continu;
 		Coordinate c1 = null;
 		String playAgain = "";
-		int whoBegin = 0;
-		int ia1WinTimes = 0;
-		int ia2WinTimes = 0;
-		int time = 1;
+		int whoBegin = 0; //decide who begin the first time 
+		int ia1WinTimes = 0;// counter of victories of player 1
+		int ia2WinTimes = 0;// counter of victories of player 2
+		int time = 1;// counter of number of Game
 		int nbTime =1;//Number of time you want to play (if IA versus IA then nbTime = 100)
-		int versionIA2 = -1;
-		/*	
-		 * 	-1 = HUMAN
-		 * 	0  = IA0
-		 * 	1  = IA1
-		 * 	2  = IA2
-		 */
+		int versionIA2 = -1; //	-1 = HUMAN,	0  = IA0, 1  = IA1, 2  = IA2
+		
 		int typeOfGame = 1;
 		// typeOfGame = 1 --> HUMAN VS HUMAN 
 		// typeOfGame = 2 --> HUMAN VS IA
@@ -222,115 +117,68 @@ public class Battleship {
 			}else {
 				tour = 1;
 			}
-			ia1 = new Player();
+			ia1 = new Human(1);
 			//INITIALIZATION OF PLAYER 2 :
 			switch (typeOfGame) {
 			case 1 :
-				ia2 = new Player();
+				ia2 = new Human(2);
 				break;
 			case 2: 
 				switch (versionIA2) {
 				case 0:
-					ia2 = new IA0();
+					ia2 = new IA0(2);
 					break;
 				case 1:
-					ia2 = new IA1();
+					ia2 = new IA1(2);
 					break;
 				case 2:
-					ia2 = new IA2();
+					ia2 = new IA2(2);
 					break;
 				}
 				break;
 			}
 			
 			
-			if (tour%2 == time%2) {
-				System.out.println("Player 1 begin");
+			if (tour%2 == time%2) { //print who begin
+				ia1.whoBegin();
 			}else {
-				if (typeOfGame == 1) {
-					System.out.println("Player 2 begin");
-				}else {
-					System.out.println("IA begin");
-				}
+				ia2.whoBegin();
 			}
 			
 			//Player 1 put 5 Ship and then Player 2 put 5 ship
 			if (time%2 ==1) {
-				System.out.println("Player 1, put 5 Ship ");
-				enterAllShipA(ia1);
-				//ia1.enterAllShip();
-				
-				if (typeOfGame == 2) {
-					//ia2.enterAllShip();
-					enterAllShipA(ia2);
-				}else {
-					System.out.println("Player 2, put 5 Ship ");
-					//ia2.enterAllShip();
-					enterAllShipA(ia2);
-				}
-				
+				ia1.enterAllShip();
+				ia2.enterAllShip();
 			}else {// Player 2 put 5 Ship and then Player 1 put 5 ship
-				if (typeOfGame == 2) {
-					//ia2.enterAllShip();
-					enterAllShipA(ia2);
-				}else {
-					System.out.println("Player 2, put 5 Ship ");
-					//ia2.enterAllShip();
-					enterAllShipA(ia2);
-				}
-				
-				System.out.println("Player 1, put 5 Ship ");
-				enterAllShipA(ia1);
-				//ia1.enterAllShip();
-				
+				ia2.enterAllShip();
+				ia1.enterAllShip();
 			}
 			
 			
-			while(!endOfTheGame(ia1,ia2)) {
+			while(!endOfTheGame(ia1,ia2)) {//GAME
 				if (tour%2 == time%2) {
 					//PLAYER 1 PLAY
-					System.out.println("\nPlayer 1 it's your turn, here's your game Board :");
-					printGameCurrentPlayer(ia1,ia2);
-					System.out.println("Player 1, here's your opponent gameboard, where do you want to shoot ?");
-					
-					printGame(ia1,ia2);
-					System.out.println("enter the coordinates of the shots ");
-					c1 = ia1.askCoordinate();
+					c1 = ia1.printShoot(ia2);
 					shoot(ia1, ia2,c1);
 				}else {
-						//PLAYER 2 PLAY
-						if (typeOfGame == 1) {
-							System.out.println("Player 2 it's your turn, here's your game Board :");
-							printGameCurrentPlayer(ia2,ia1);
-							System.out.println("Player 2, here's your opponent gameboard, where do you want to shoot ?");
-							
-							printGame(ia2,ia1);
-							System.out.println("enter the coordinates of the shots ");
-							c1 = ia2.askCoordinate();
-							shoot(ia2, ia1,c1);
-						}else {
-							c1 = ia2.askCoordinate(ia1);
-							System.out.print("IA shoot in " +c1+" :");
-							shoot(ia2, ia1,c1);
-						}
+					//PLAYER 2 PLAY
+					c1 = ia2.printShoot(ia1);
+					shoot(ia2, ia1,c1);
 				}
 				tour += 1;
 			}
 			
 			time +=1;
-			if (ia1.allShipDestroyed()) {
+			if (ia1.allShipDestroyed()) {//increase scores and print final game
 				ia2WinTimes += 1;
 			}
 			else {
 				ia1WinTimes += 1;
 			}
+			//Print scores 
+			ia1.printScores(ia1WinTimes, nbTime);
+			ia2.printScores(ia2WinTimes, nbTime);
 			
-			System.out.println("\nPlayer 1 win "+ia1WinTimes+ "/"+nbTime+ " times ");
-			if (typeOfGame == 1) {
-				System.out.println("Player 2 win "+ia2WinTimes+ "/"+nbTime+ " times ");
-			}else {
-				System.out.println("IA with version "+versionIA2+ " win "+ia2WinTimes+ "/"+nbTime+ " times ");
-			}
 			//ASK TO THE PLAYER(S) IF THEY WANT TO PLAY AGAIN :
 			continu = true;
 			while (continu) {
@@ -350,12 +198,9 @@ public class Battleship {
 				nbTime += 1;
 			}else {
 				System.out.println("Final results :");
-				System.out.println("\nPlayer 1 win "+ia1WinTimes+ "/"+nbTime+ " times ");
-				if (typeOfGame == 1) {
-					System.out.println("Player 2 win "+ia2WinTimes+ "/"+nbTime+ " times ");
-				}else {
-					System.out.println("IA with version "+versionIA2+ " win "+ia2WinTimes+ "/"+nbTime+ " times ");
-				}
+				ia1.printScores(ia1WinTimes, nbTime);
+				ia2.printScores(ia2WinTimes, nbTime);
+				
 				if (ia1WinTimes < ia2WinTimes) {
 					System.out.println("Congratulation to player 2 !!");
 				}else {

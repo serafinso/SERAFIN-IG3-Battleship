@@ -5,6 +5,7 @@ public class Coordinate {
 	private int r;
 	private boolean hit = false;
 	
+	//BUILDER
 	public Coordinate(String ca) {
 		String row ="";
 		int y=0;
@@ -29,7 +30,7 @@ public class Coordinate {
 			r=0;
 			c=null;
 		}
-	}
+	}//END OF BUILDER
 	
 	public String toString() {
 		return c+r;
