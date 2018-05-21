@@ -51,19 +51,15 @@ public class Coordinate {
 		return c;
 	}
 	
+	public int getR() {
+		return r;
+	}
+	
 	public boolean getHit() {
 		return hit;
 	}
 
 	public void setHit(boolean hit) { //needed for hit a Ship
 		this.hit = hit;
-	}
-
-	public int getR() {
-		return r;
-	}
-
-	public void setR(int r) {
-		this.r = r;
 	}
 }

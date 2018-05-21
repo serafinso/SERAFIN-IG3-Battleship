@@ -6,22 +6,9 @@ public class IA0 extends Player {
 		super(num);
 	}
 	
-	public final Coordinate printShoot(Player o) {//final because it's the same for all the IA (avoid override)
-		//Ask where to shoot and print where the IA shoot 
-		Coordinate c1 = null;
-		c1 = askCoordinate(o);
-		System.out.print("IA shoot in " +c1+" : ");
-		return c1;
-	}
-
 	public final void whoBegin() { //final because it's the same for all the IA (avoid override)
 		//print scores of this IA
 		System.out.println("IA begin");
-	}
-	
-	public final void printScores(int playerWinTimes, int nbTime) { //final because it's the same for all the IA (avoid override)
-		//print scores of this IA
-		System.out.println("IA win "+playerWinTimes+ "/"+nbTime+ " times ");
 	}
 	
 	public Ship enterShipIA(int size) {
@@ -55,12 +42,24 @@ public class IA0 extends Player {
 			addShiplist(s1);
 		}
 		Ship s1 = enterShipIA(3);
-		addShiplist(s1);
-		
+		addShiplist(s1);	
 	}
-		
-	public Coordinate askCoordinate(Player p) {
+	
+	public Coordinate askCoordinate(Player o) {
 		//return a random Coordinate
 		return new Coordinate( randomBetween('A','J') + random10());	
+	}
+	
+	public final Coordinate printShoot(Player o) {//final because it's the same for all the IA (avoid override)
+		//Ask where to shoot and print where the IA shoot 
+		Coordinate c1 = null;
+		c1 = askCoordinate(o);
+		System.out.print("IA shoot in " +c1+" : ");
+		return c1;
+	}
+	
+	public final void printScores(int playerWinTimes, int nbTime) { //final because it's the same for all the IA (avoid override)
+		//print scores of this IA
+		System.out.println("IA win "+playerWinTimes+ "/"+nbTime+ " times ");
 	}
 }

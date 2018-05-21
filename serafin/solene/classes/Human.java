@@ -6,6 +6,11 @@ public class Human extends Player{
 	public Human(int num) {//CONSTRUCTOR
 		super(num);
 	}
+	
+	public void whoBegin() {
+		//Execute only if the current player begin
+		System.out.println("Player "+getNum()+" begin");
+	}
 
 	public void printShipIn() {
 		//print the ship that the player has already placed on the game board
@@ -62,95 +67,22 @@ public class Human extends Player{
 		}
 	}
 	
-	
-	public void printGameCurrentPlayer(Player o){ 
-		//o = player opponent, pAttack = player who attack
-		//print the game for a player before and after pAttack attack (print where he already attack and boat he as hit)
-		//S = You have a Ship here //~ = nothing happen here//1 = ShipFind//-1 = ShipDestroyed//X missile in the water
-		System.out.println("\n 1 = Your Ship is Hit but it isn't destroyed \n-1 = Your Ship is destroyed \n ~ = Water "
-				+ "\n X = Opponent shot in the water \n S = You have a Ship not hit \n");
-		System.out.println("     A   B   C   D   E   F   G   H   I   J  \n");
-		for(int r=1; r<=10;r++ ) {//for each row
-			if (r==10) {// remove the offset of 10 which has two digits
-				System.out.print(" " + r +"  ");
-			} else {
-				System.out.print(" " + r +"   ");
-			}
-			for(char c='A'; c <= 'J'; c++) {//for each column
-				Coordinate c1 = new Coordinate (Character.toString(c) + Integer.toString(r));
-				if (shipAtThisCoordinate(c1) && !whichShipHere(c1).isHit(c1)) {
-					System.out.print("S   ");
-				}  else {
-					if (o.coordinateHitContains(c1)) {
-						System.out.print("X   ");
-					} else {
-						if (shipAtThisCoordinate(c1)) {
-							Ship s1 = whichShipHere(c1);
-							if (s1.isDestroyed()) {
-								System.out.print("-1  ");
-							} else {
-								if (s1.isHit(c1)) {
-									System.out.print("1   ");
-								} else {
-									System.out.print("~   ");
-								}
-							}
-						} else {
-							System.out.print("~   ");
-						}
-					}
-				}
-			}
-			System.out.println();
-			System.out.println();
-		}
-	}
-	
-	public Coordinate printShoot(Player o) {
-		//function that print the gameBoards and ask to the player to enter a coordinate to shoot
-		System.out.println("Player "+ getNum()+" it's your turn, here's your game Board :");
-		printGameCurrentPlayer(o);
-		System.out.println("Player "+getNum()+", here's your opponent gameboard, where do you want to shoot ?");
-		printGame(o);
-		System.out.println("enter the coordinates of the shots ");
-		return askCoordinate(o);
-	}
-	
-	public Coordinate askCoordinate(Player o) { 
-		//ask to the user to enter one Coordinate while the Coordinate enter is correct 
-		boolean continu = true;
-		Coordinate c1 = null;
-		while (continu) {			
-			@SuppressWarnings("resource")
-			Scanner sc = new Scanner(System.in);
-			String str = sc.nextLine();
-			if (!str.isEmpty()) {
-				c1 = new Coordinate (str);
-				if (c1.isCorrect()) {
-					continu = false;
-				}
-				else {
-					System.out.println("Invalid coordonate ");
-				}
-			}
-			else {
-				System.out.println("Invalid coordonate ");
-			}
-		}
-		return c1;
-	}
-	
 	public Ship askShip() {
 		// ask 2 Coordinates at the user to define a ship and check if the Coordinates are corrects
 		Coordinate c1 = null;
 		Coordinate c2 = null;
 		Ship s1 = null;
+		int l=0;
 		do {
+			if (l>0) {
+				System.out.println("Invalid Ship");
+			}
+			l=l+1;
 			System.out.println("Enter the first coordonate of the ship");
 			c1 = askCoordinate(new Player(0));
 			System.out.println("Enter the second coordonate of the ship ");
 			c2 = askCoordinate(new Player(0));
-			System.out.println("Invalid Ship");
+			
 			} while(!correctShip(c1,c2) && !correctShip(c2, c1)); // (The player can still enter a boat with the coordinates not in the order)
 		if (correctShip(c1,c2)) {
 			s1 = new Ship(c1,c2);
@@ -163,7 +95,8 @@ public class Human extends Player{
 	public void enterAllShip() {
 		//Enter all the ship in the shiplist of the current player and check the lengths
 		//check the size of a ship and if an other ship of this size is not already on the board game
-
+		printShipIn();
+		printGamePlaceShip();
 		System.out.println("Player "+getNum()+", put 5 Ship ");
 		while (getShiplist().size()<5) {
 			Ship s1;
@@ -213,11 +146,85 @@ public class Human extends Player{
 		for (int i=0; i<40; i++) {
 			System.out.println();
 		}
+	}	
+	
+	public void printGameCurrentPlayer(Player o){ 
+		//o = player opponent, pAttack = player who attack
+		//print the game for a player before and after pAttack attack (print where he already attack and boat he as hit)
+		//S = You have a Ship here //~ = nothing happen here//1 = ShipFind//-1 = ShipDestroyed//X missile in the water
+		System.out.println("\n 1 = Your Ship is Hit but it isn't destroyed \n-1 = Your Ship is destroyed \n ~ = Water "
+				+ "\n X = Opponent shot in the water \n S = You have a Ship not hit \n");
+		System.out.println("     A   B   C   D   E   F   G   H   I   J  \n");
+		for(int r=1; r<=10;r++ ) {//for each row
+			if (r==10) {// remove the offset of 10 which has two digits
+				System.out.print(" " + r +"  ");
+			} else {
+				System.out.print(" " + r +"   ");
+			}
+			for(char c='A'; c <= 'J'; c++) {//for each column
+				Coordinate c1 = new Coordinate (Character.toString(c) + Integer.toString(r));
+				if (shipAtThisCoordinate(c1) && !whichShipHere(c1).isHit(c1)) {
+					System.out.print("S   ");
+				}  else {
+					if (o.coordinateHitContains(c1)) {
+						System.out.print("X   ");
+					} else {
+						if (shipAtThisCoordinate(c1)) {
+							Ship s1 = whichShipHere(c1);
+							if (s1.isDestroyed()) {
+								System.out.print("-1  ");
+							} else {
+								if (s1.isHit(c1)) {
+									System.out.print("1   ");
+								} else {
+									System.out.print("~   ");
+								}
+							}
+						} else {
+							System.out.print("~   ");
+						}
+					}
+				}
+			}
+			System.out.println();
+			System.out.println();
+		}
 	}
-	public void whoBegin() {
-		//Execute only if the current player begin
-		System.out.println("Player "+getNum()+" begin");
+	
+	public Coordinate askCoordinate(Player o) { 
+		//ask to the user to enter one Coordinate while the Coordinate enter is correct 
+		boolean continu = true;
+		Coordinate c1 = null;
+		while (continu) {			
+			@SuppressWarnings("resource")
+			Scanner sc = new Scanner(System.in);
+			String str = sc.nextLine();
+			if (!str.isEmpty()) {
+				c1 = new Coordinate (str);
+				if (c1.isCorrect()) {
+					continu = false;
+				}
+				else {
+					System.out.println("Invalid coordonate ");
+				}
+			}
+			else {
+				System.out.println("Invalid coordonate ");
+			}
+		}
+		return c1;
 	}
+	
+	public Coordinate printShoot(Player o) {
+		//function that print the gameBoards and ask to the player to enter a coordinate to shoot
+		System.out.println("Player "+ getNum()+" it's your turn, here's your game Board :");
+		printGameCurrentPlayer(o);
+		System.out.println("Player "+getNum()+", here's your opponent gameboard, where do you want to shoot ?");
+		printGame(o);
+		System.out.println("enter the coordinates of the shots ");
+		return askCoordinate(o);
+	}	
+	
 	
 	public void printScores(int playerWinTimes, int nbTime) {
 		//print the scores of the current player

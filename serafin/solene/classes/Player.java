@@ -94,17 +94,6 @@ public class Player implements PlayerMustDo {
 		return s1;
 	}
 	
-	public boolean allShipDestroyed() {
-		//return True if all the Ship of the current player are destroyed 
-		for (int i =0; i< shiplist.size(); i++) {
-			Ship s1 = shiplist.get(i);
-			if(!s1.isDestroyed()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	public boolean coordinateHitContains(Coordinate c1) {
 		//return true if the array CoordinateHit of the current player contain c1
 		for (int i =0;i< coordinateHit.size();i++) {
@@ -112,19 +101,6 @@ public class Player implements PlayerMustDo {
 				return true;
 		}
 		return false;
-	}
-	
-	public int random10() {
-		//random between 1 and 10
-		Random rd = new Random();
-		return rd.nextInt(10) + 1;
-	}
-	
-	public String randomBetween(char min, char max) {
-		//return a string between a char min and a char max 
-		Random rd = new Random();
-		char c = (char)(rd.nextInt(max - min + 1) + min);
-		return Character.toString(c);
 	}
 	
 	public void printGame(Player o){
@@ -165,6 +141,30 @@ public class Player implements PlayerMustDo {
 			System.out.println();
 			System.out.println();
 		}
+	}
+	
+	public boolean allShipDestroyed() {
+		//return True if all the Ship of the current player are destroyed 
+		for (int i =0; i< shiplist.size(); i++) {
+			Ship s1 = shiplist.get(i);
+			if(!s1.isDestroyed()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public int random10() {
+		//random between 1 and 10
+		Random rd = new Random();
+		return rd.nextInt(10) + 1;
+	}
+	
+	public String randomBetween(char min, char max) {
+		//return a string between a char min and a char max 
+		Random rd = new Random();
+		char c = (char)(rd.nextInt(max - min + 1) + min);
+		return Character.toString(c);
 	}
 
 	//GETTER AND SETTER :
