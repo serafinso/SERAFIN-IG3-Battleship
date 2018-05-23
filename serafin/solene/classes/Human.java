@@ -67,6 +67,17 @@ public class Human extends Player{
 		}
 	}
 	
+	public void waitForIt() {
+		//In order to hide the board game when a player finish to put all his Ship
+		System.out.println("All your Ship are in the board game. Press enter to continue");
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		scanner.nextLine();
+		for (int i=0; i<40; i++) {
+			System.out.println();
+		}
+	}
+	
 	public Ship askShip() {
 		// ask 2 Coordinates at the user to define a ship and check if the Coordinates are corrects
 		Coordinate c1 = null;
@@ -139,13 +150,7 @@ public class Human extends Player{
 			printGamePlaceShip();
 		}
 		//In order to hide the boat from the opponent
-		System.out.println("All your Ship are in the board game. Press enter to continue");
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		scanner.nextLine();
-		for (int i=0; i<40; i++) {
-			System.out.println();
-		}
+		waitForIt();		
 	}	
 	
 	public void printGameCurrentPlayer(Player o){ 

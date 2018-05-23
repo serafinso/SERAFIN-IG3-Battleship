@@ -1,6 +1,6 @@
 package serafin.solene.classes;
 
-public class IA1 extends IA0{	
+public class IA1 extends IA{	
 	
 	public IA1(int num) {//CONSTRUCTOR
 		super(num);

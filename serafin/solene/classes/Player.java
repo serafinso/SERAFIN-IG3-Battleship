@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Player implements PlayerMustDo {
+	private int num;
 	private ArrayList<Coordinate> coordinateHit = new ArrayList<Coordinate>(); //Coordinate shoot by the current player
 	private ArrayList<Ship> shiplist = new ArrayList<Ship>(); //List of ship of the current player
-	private int num;
 	
 	public Player(int num){//CONSTRUCTOR
 		this.num = num;

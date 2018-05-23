@@ -30,10 +30,6 @@ public class Coordinate {
 			c=null;
 		}
 	}//END OF BUILDER
-	
-	public String toString() {
-		return c+r;
-	}
 
 	public boolean isCorrect() {
 		//check if a Coordinate is correct 
@@ -43,6 +39,10 @@ public class Coordinate {
 	public boolean equal (Coordinate c2) {
 		//return true if c2 is equal to the current Coordinate
 		return this.c.equals(c2.getC()) && this.r==c2.getR();
+	}
+	
+	public String toString() {
+		return c+r;
 	}
 	
 	//GETTER AND SETTER

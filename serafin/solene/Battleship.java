@@ -159,6 +159,7 @@ public class Battleship {
 					//PLAYER 1 PLAY
 					c1 = ia1.printShoot(ia2);
 					shoot(ia1, ia2,c1);
+					
 				}else {
 					//PLAYER 2 PLAY
 					c1 = ia2.printShoot(ia1);
